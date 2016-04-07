@@ -13,7 +13,8 @@ class Strategy {
     string    name;                  // Strategy name.
     double    data[H1][FINAL_INDICATOR_INDEX_ENTRY];
     int       tf;                    // Timeframe
-    int       open_method = EMPTY    // Open method.
+    int       open_method = EMPTY;   // Open method.
+    double    open_level  = 0.0;     // Open level.
 
     public:
         Strategy() {string name; int timeframe} // constructor
