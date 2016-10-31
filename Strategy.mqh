@@ -13,12 +13,12 @@ class Strategy {
     string    name;                  // Strategy name.
     double    data[H1][FINAL_INDICATOR_INDEX_ENTRY];
     int       tf;                    // Timeframe
-    int       open_method = EMPTY;   // Open method.
-    double    open_level  = 0.0;     // Open level.
+    int       signal_method = EMPTY;   // Signal method.
+    double    signal_level  = 0.0;     // Signal level.
 
     public:
         Strategy() {string name; int timeframe} // constructor
         bool      Update(int tf = EMPTY) { return False; } // Update indicators.
-        bool      Trade(int cmd, int open_method = EMPTY) { return False; }  // Check if strategy is on buy or sell.
+        bool      Trade(int cmd, int signal_method = EMPTY) { return False; }  // Check if strategy is on buy or sell.
 
 };

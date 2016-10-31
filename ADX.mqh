@@ -5,8 +5,8 @@
 //+------------------------------------------------------------------+
 class ADX: public Strategy {
     protected:
-        int       open_method = EMPTY;    // Open method.
-        double    open_level  = 0.0;     // Open level.
+        int       signal_method = EMPTY;    // Signal method.
+        double    signal_level  = 0.0;     // Signal level.
 
     public:
         // Update indicator values.
@@ -19,19 +19,19 @@ class ADX: public Strategy {
                 data[period][i][MODE_MINUSDI] = iADX(_Symbol, tf, ADX_Period, ADX_Applied_Price, MODE_MINUSDI, i); // -DI indicator line
             }
         }
-        bool Trade(int cmd, int tf = EMPTY, int open_method = 0, open_level = 0.0) {
+        bool Trade(int cmd, int tf = EMPTY, int signal_method = 0, signal_level = 0.0) {
             bool result = FALSE;
-            if (open_method == EMPTY) open_method = this->open_method; // @fixme: This means to get the value from the class.
+            if (signal_method == EMPTY) signal_method = this->signal_method; // @fixme: This means to get the value from the class.
             int period = Convert::TimeframeToPeriod(tf); // Convert.mqh
 
             switch (cmd) {
                 case OP_BUY: // Indicator growth at downtrend.
                     bool result = @fixme; //Buy: +DI line is above -DI line, ADX is more than a certain value and grows (i.e. trend strengthens)
-                    if ((open_method &   1) != 0) result = result && Open[CURR] > Close[CURR];
-                    if ((open_method &   2) != 0) result = result && Trade(Convert::CmdOpp); // Check if position on sell.
-                    if ((open_method &   4) != 0) result = result && Trade(MathMin(period + 1, M30)); // Check if strategy is signaled on higher period.
-                    if ((open_method &   8) != 0) result = result && Trade(cmd, M30); // Check if there is signal on M30.
-                    if ((open_method &  16) != 0) result = result && // condition here
+                    if ((signal_method &   1) != 0) result = result && Open[CURR] > Close[CURR];
+                    if ((signal_method &   2) != 0) result = result && Trade(Convert::CmdOpp); // Check if position on sell.
+                    if ((signal_method &   4) != 0) result = result && Trade(MathMin(period + 1, M30)); // Check if strategy is signaled on higher period.
+                    if ((signal_method &   8) != 0) result = result && Trade(cmd, M30); // Check if there is signal on M30.
+                    if ((signal_method &  16) != 0) result = result && // condition here
                     // @todo: Add these conditions in separate bitwise conditions.
                     // (iADX(NULL,piadx,piadu,PRICE_CLOSE,MODE_MINUSDI,0)<iADX(NULL,piadx,piadu,PRICE_CLOSE,MODE_PLUSDI,0)
                     // &&iADX(NULL,piadx,piadu,PRICE_CLOSE,MODE_MAIN,0)>=minadx
@@ -40,11 +40,11 @@ class ADX: public Strategy {
                     break;
                 case OP_SELL: // Indicator fall at uptrend.
                     bool result = @fixme; //Sell: -DI line is above +DI line, ADX is more than a certain value and grows (i.e. trend strengthens)
-                    if ((open_method &   1) != 0) result = result && Open[CURR] < Close[CURR];
-                    if ((open_method &   2) != 0) result = result && Trade(Convert::CmdOpp);
-                    if ((open_method &   4) != 0) result = result && Trade(cmd, MathMin(period + 1, M30));
-                    if ((open_method &   8) != 0) result = result && Trade(cmd, M30);
-                    if ((open_method &  16) != 0) result = result && // condition here
+                    if ((signal_method &   1) != 0) result = result && Open[CURR] < Close[CURR];
+                    if ((signal_method &   2) != 0) result = result && Trade(Convert::CmdOpp);
+                    if ((signal_method &   4) != 0) result = result && Trade(cmd, MathMin(period + 1, M30));
+                    if ((signal_method &   8) != 0) result = result && Trade(cmd, M30);
+                    if ((signal_method &  16) != 0) result = result && // condition here
                     // @todo: Add these conditions in separate bitwise conditions.
                     // (iADX(NULL,piadx,piadu,PRICE_CLOSE,MODE_MINUSDI,0)>iADX(NULL,piadx,piadu,PRICE_CLOSE,MODE_PLUSDI,0)
                     // &&iADX(NULL,piadx,piadu,PRICE_CLOSE,MODE_MAIN,0)>=minadx
